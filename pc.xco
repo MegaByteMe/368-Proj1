@@ -1,7 +1,7 @@
 ##############################################################
 #
 # Xilinx Core Generator version 14.7
-# Date: Wed Mar 11 17:50:15 2015
+# Date: Wed Mar 18 23:20:55 2015
 #
 ##############################################################
 #
@@ -45,14 +45,14 @@ CSET component_name=pc
 CSET count_mode=UP
 CSET fb_latency=2
 CSET fb_latency_configuration=Automatic
-CSET final_count_value=20
+CSET final_count_value=1E
 CSET implementation=Fabric
 CSET increment_value=1
 CSET latency=1
 CSET latency_configuration=Automatic
 CSET load=true
 CSET load_sense=Active_High
-CSET output_width=6
+CSET output_width=5
 CSET restrict_count=true
 CSET sclr=false
 CSET sinit=false
@@ -67,4 +67,4 @@ CSET threshold_value=1
 MISC pkg_timestamp=2013-07-22T10:37:35Z
 # END Extra information
 GENERATE
-# CRC:  7faade9
+# CRC: 45bb465d

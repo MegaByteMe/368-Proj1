@@ -33,35 +33,35 @@ NET "RST" LOC = B18;
 #NET "ASCII_D<7>" LOC = R4;
 
 ##PS/2 Assignment
-NET "PS2_CLK"  LOC = R12;
-NET "PS2_DATA" LOC = P11;
+#NET "PS2_CLK"  LOC = R12;
+#NET "PS2_DATA" LOC = P11;
 
 ##VGA Assignment
 #8-bit color(256 options), only need 3-bit just use the 510ohm connects
-Net "VGARED<0>" LOC = R9; #2Kohm  to RED
-Net "VGARED<1>" LOC = T8; #1Kohm  to RED
-Net "VGARED<2>" LOC = R8; #510ohm to RED
-Net "VGAGRN<0>" LOC = N8; #2Kohm  to GREEN
-Net "VGAGRN<1>" LOC = P8; #1Kohm  to GREEN
-Net "VGAGRN<2>" LOC = P6; #510ohm to GREEN
-Net "VGABLU<0>" LOC = U5; #1Kohm  to BLUE
-Net "VGABLU<1>" LOC = U4; #510ohm to BLUE
-Net "HSYNC" LOC = T4;
-Net "VSYNC" LOC = U3;
+#Net "VGARED<0>" LOC = R9; #2Kohm  to RED
+#Net "VGARED<1>" LOC = T8; #1Kohm  to RED
+#Net "VGARED<2>" LOC = R8; #510ohm to RED
+#Net "VGAGRN<0>" LOC = N8; #2Kohm  to GREEN
+#Net "VGAGRN<1>" LOC = P8; #1Kohm  to GREEN
+#Net "VGAGRN<2>" LOC = P6; #510ohm to GREEN
+#Net "VGABLU<0>" LOC = U5; #1Kohm  to BLUE
+#Net "VGABLU<1>" LOC = U4; #510ohm to BLUE
+#Net "HSYNC" LOC = T4;
+#Net "VSYNC" LOC = U3;
 
 #7 Segment Display
-Net "SEG<0>" LOC = L18;
-Net "SEG<1>" LOC = F18;
-Net "SEG<2>" LOC = D17;
-Net "SEG<3>" LOC = D16;
-Net "SEG<4>" LOC = G14;
-Net "SEG<5>" LOC = J17;
-Net "SEG<6>" LOC = H14;
-Net "DP"     LOC = C17;
-Net "AN<0>"  LOC = F17;
-Net "AN<1>"  LOC = H17;
-Net "AN<2>"  LOC = C18;
-Net "AN<3>"  LOC = F15;
+#Net "SEG<0>" LOC = L18;
+#Net "SEG<1>" LOC = F18;
+#Net "SEG<2>" LOC = D17;
+#Net "SEG<3>" LOC = D16;
+#Net "SEG<4>" LOC = G14;
+#Net "SEG<5>" LOC = J17;
+#Net "SEG<6>" LOC = H14;
+#Net "DP"     LOC = C17;
+#Net "AN<0>"  LOC = F17;
+#Net "AN<1>"  LOC = H17;
+#Net "AN<2>"  LOC = C18;
+#Net "AN<3>"  LOC = F15;
 
 #LED Assignment
 NET "LED<0>" LOC = J14;
