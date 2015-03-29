@@ -1,7 +1,7 @@
 ##############################################################
 #
 # Xilinx Core Generator version 14.7
-# Date: Thu Mar 19 20:12:04 2015
+# Date: Thu Mar 26 18:44:45 2015
 #
 ##############################################################
 #
@@ -97,7 +97,7 @@ CSET use_regcea_pin=false
 CSET use_regceb_pin=false
 CSET use_rsta_pin=false
 CSET use_rstb_pin=false
-CSET write_depth_a=16
+CSET write_depth_a=255
 CSET write_width_a=16
 CSET write_width_b=16
 # END Parameters
@@ -105,4 +105,4 @@ CSET write_width_b=16
 MISC pkg_timestamp=2012-11-19T16:22:25Z
 # END Extra information
 GENERATE
-# CRC: 77ed7a87
+# CRC: e824889b

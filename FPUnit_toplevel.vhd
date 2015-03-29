@@ -29,19 +29,22 @@ entity FPUnit_toplevel is
 			LDST : OUT STD_LOGIC_VECTOR(15 downto 0);
 			IM_FEED : IN STD_LOGIC_VECTOR(15 downto 0);
 			
-			RB_ENA : IN STD_LOGIC;
-			RB_ENB : IN STD_LOGIC;
-			RB_WEA : IN STD_LOGIC_VECTOR(0 downto 0);
-			RB_WEB : IN STD_LOGIC_VECTOR(0 downto 0);
-			RB_ADDRA : IN STD_LOGIC_VECTOR(3 downto 0);
-			RB_ADDRB : IN STD_LOGIC_VECTOR(3 downto 0);
+			RB_ENA, RB_ENB : IN STD_LOGIC;
+			RB_WEA, RB_WEB : IN STD_LOGIC_VECTOR(0 downto 0);
+			RB_ADDRA, RB_ADDRB : IN STD_LOGIC_VECTOR(3 downto 0);
 			
 			AMUXSEL : IN STD_LOGIC;
 			BMUXSEL : IN STD_LOGIC_VECTOR(1 downto 0);
 			
+			RAWen, RBWen, FPRWen : IN STD_LOGIC;
+			
 			EXTRAMI : OUT STD_LOGIC_VECTOR(15 downto 0);
 			EXTRAMO : IN STD_LOGIC_VECTOR(15 downto 0);
 			
+			LOCMADDR : IN STD_LOGIC_VECTOR(7 downto 0);
+			LMEN : IN STD_LOGIC;
+			LMWEA : IN STD_LOGIC_VECTOR(0 downto 0);
+						
 			FOSWSEL : IN STD_LOGIC
 		);
 end FPUnit_toplevel;
@@ -52,21 +55,57 @@ architecture Structural of FPUnit_toplevel is
 	signal OPA : STD_LOGIC_VECTOR(15 downto 0) := (others => '0');
 	signal OPB : STD_LOGIC_VECTOR(15 downto 0) := (others => '0');
 	
-	signal INA_REG : STD_LOGIC_VECTOR(15 downto 0) := (others => '0');
-	signal INB_REG : STD_LOGIC_VECTOR(15 downto 0) := (others => '0');
-	signal OUTA_REG : STD_LOGIC_VECTOR(15 downto 0) := (others => '0');
-	signal OUTB_REG : STD_LOGIC_VECTOR(15 downto 0) := (others => '0');
-	
-	signal RBA_IN_MUX : STD_LOGIC_VECTOR(15 downto 0) := (others => '0');
-	signal RBB_IN_MUX : STD_LOGIC_VECTOR(15 downto 0) := (others => '0');
+	signal INA_REG, INB_REG : STD_LOGIC_VECTOR(15 downto 0) := (others => '0');
+	signal OUTA_REG, OUTB_REG : STD_LOGIC_VECTOR(15 downto 0) := (others => '0');
+	signal AStorreg, BStorreg : STD_LOGIC_VECTOR(15 downto 0) := (others => '0');
+		
+	signal RBA_IN_MUX, RBB_IN_MUX : STD_LOGIC_VECTOR(15 downto 0) := (others => '0');
 	
 	signal IMMED : STD_LOGIC_VECTOR(15 downto 0) := (others => '0');
-	signal ALU_FRESH : STD_LOGIC_VECTOR(15 downto 0) := (others => '0');
-	signal ALU_DIVERT : STD_LOGIC_VECTOR(15 downto 0) := (others => '0');
+	signal ALU_FRESH, ALUtoSW, ALU_DIVERT : STD_LOGIC_VECTOR(15 downto 0) := (others => '0');
+	
+	signal locmemIN : STD_LOGIC_VECTOR(15 downto 0) := (others => '0');
+	signal locmemOUT : STD_LOGIC_VECTOR(15 downto 0) := (others => '0');
 	
 begin
+ALU_OUT <= ALUtoSW;
+EXTRAMI <= ALUtoSW;
+IMMED <= X"00" & IM_FEED(7 downto 0);
 
-IMMED <= X"0" & IM_FEED(11 downto 0);
+	INA_Mux: entity work.MUXX2
+		port map(
+					SEL => AMUXSEL,
+					XIN => OUTA_REG,
+					YIN => EXTRAMO,
+					ZOUT => AStorreg
+					);
+					
+	INB_Mux: entity work.MUXX3
+		port map(
+					SEL => BMUXSEL,
+					WIN => OUTB_REG,
+					XIN => IMMED,
+					YIN => EXTRAMO,
+					ZOUT => BStorreg
+					);
+
+	RAReg: entity work.SoloReg
+		port map(
+					clk => CLK,
+					xin => AStorreg,
+					yout => OPA,
+					wen => RAWen,
+					rst => rst
+					);
+					
+	RBReg: entity work.SoloReg
+		port map(
+					clk => CLK,
+					xin => BStorreg,
+					yout => OPB,
+					wen => RBWen,
+					rst => rst
+					);
 
 	FPU: entity work.alu
 		port map(
@@ -77,6 +116,15 @@ IMMED <= X"0" & IM_FEED(11 downto 0);
 					CCR => CCR,
 					ALU_OUT => ALU_FRESH,
 					LDST_OUT => LDST
+					);
+					
+	FPUReg: entity work.SoloReg
+		port map(
+					CLK => CLK,
+					RST => RST,
+					XIN => ALU_FRESH,
+					YOUT => ALUtoSW,
+					WEN => FPRWEN
 					);
 					
 	GP_REG: entity work.GP_Reg_Bank
@@ -98,37 +146,22 @@ IMMED <= X"0" & IM_FEED(11 downto 0);
 					WEB => RB_WEB
 					);
 					
-	INA_Mux: entity work.MUXX2
-		port map(
-					SEL => AMUXSEL,
-					XIN => OUTA_REG,
-					YIN => IMMED,
-					ZOUT => OPA
-					);
-					
-	INB_Mux: entity work.MUXX3
-		port map(
-					SEL => BMUXSEL,
-					WIN => IMMED,
-					XIN => OUTA_REG,
-					YIN => IMMED,
-					ZOUT => OPB
-					);
-					
-	ALUSW: entity work.SWI
-		port map(
-					SEL => FOSWSEL,
-					ZIN => ALU_FRESH,
-					XOUT => ALU_OUT,
-					YOUT => EXTRAMI
-					);
-					
 	INA_REG_Mux: entity work.MUXX2
 		port map(
 					SEL => FOSWSEL,
-					XIN => ALU_OUT,
+					XIN => ALUtoSW,
 					YIN => RBA_IN_MUX,
 					ZOUT => INA_REG
+					);
+					
+	LOC_RAM : entity work.general_ram
+		port map(
+					CLKA => CLK,
+					DINA => locmemIN,
+					DOUTA => locmemOUT,
+					ADDRA => locmADDR,
+					ENA => LMEN,
+					WEA => LMWEA
 					);
 					
 end Structural;

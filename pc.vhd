@@ -1,104 +1,53 @@
---------------------------------------------------------------------------------
---    This file is owned and controlled by Xilinx and must be used solely     --
---    for design, simulation, implementation and creation of design files     --
---    limited to Xilinx devices or technologies. Use with non-Xilinx          --
---    devices or technologies is expressly prohibited and immediately         --
---    terminates your license.                                                --
---                                                                            --
---    XILINX IS PROVIDING THIS DESIGN, CODE, OR INFORMATION "AS IS" SOLELY    --
---    FOR USE IN DEVELOPING PROGRAMS AND SOLUTIONS FOR XILINX DEVICES.  BY    --
---    PROVIDING THIS DESIGN, CODE, OR INFORMATION AS ONE POSSIBLE             --
---    IMPLEMENTATION OF THIS FEATURE, APPLICATION OR STANDARD, XILINX IS      --
---    MAKING NO REPRESENTATION THAT THIS IMPLEMENTATION IS FREE FROM ANY      --
---    CLAIMS OF INFRINGEMENT, AND YOU ARE RESPONSIBLE FOR OBTAINING ANY       --
---    RIGHTS YOU MAY REQUIRE FOR YOUR IMPLEMENTATION.  XILINX EXPRESSLY       --
---    DISCLAIMS ANY WARRANTY WHATSOEVER WITH RESPECT TO THE ADEQUACY OF THE   --
---    IMPLEMENTATION, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OR          --
---    REPRESENTATIONS THAT THIS IMPLEMENTATION IS FREE FROM CLAIMS OF         --
---    INFRINGEMENT, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A   --
---    PARTICULAR PURPOSE.                                                     --
---                                                                            --
---    Xilinx products are not intended for use in life support appliances,    --
---    devices, or systems.  Use in such applications are expressly            --
---    prohibited.                                                             --
---                                                                            --
---    (c) Copyright 1995-2015 Xilinx, Inc.                                    --
---    All rights reserved.                                                    --
---------------------------------------------------------------------------------
---------------------------------------------------------------------------------
--- You must compile the wrapper file pc.vhd when simulating
--- the core, pc. When compiling the wrapper file, be sure to
--- reference the XilinxCoreLib VHDL simulation library. For detailed
--- instructions, please refer to the "CORE Generator Help".
+----------------------------------------------------------------------------------
+-- Company: 
+-- Engineer: 
+-- 
+-- Create Date:    21:11:15 03/25/2015 
+-- Design Name: 
+-- Module Name:    PC - Behavioral 
+-- Project Name: 
+-- Target Devices: 
+-- Tool versions: 
+-- Description: 
+--
+-- Dependencies: 
+--
+-- Revision: 
+-- Revision 0.01 - File Created
+-- Additional Comments: 
+--
+----------------------------------------------------------------------------------
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
 
--- The synthesis directives "translate_off/translate_on" specified
--- below are supported by Xilinx, Mentor Graphics and Synplicity
--- synthesis tools. Ensure they are correct for your synthesis tool(s).
+entity PC is
+	port(
+			CLK : IN STD_LOGIC;
+			Trig : IN STD_LOGIC;
+			Count : OUT STD_LOGIC_VECTOR(7 downto 0);
+			SCLR : IN STD_LOGIC;
+			LDEN : IN STD_LOGIC;
+			LOAD : IN STD_LOGIC_VECTOR(7 downto 0)
+			);
+end PC;
 
-LIBRARY ieee;
-USE ieee.std_logic_1164.ALL;
--- synthesis translate_off
-LIBRARY XilinxCoreLib;
--- synthesis translate_on
-ENTITY pc IS
-  PORT (
-    clk : IN STD_LOGIC;
-    ce : IN STD_LOGIC;
-    load : IN STD_LOGIC;
-    l : IN STD_LOGIC_VECTOR(5 DOWNTO 0);
-    q : OUT STD_LOGIC_VECTOR(5 DOWNTO 0)
-  );
-END pc;
+architecture Behavioral of PC is
+	signal C : STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
+	signal A : STD_LOGIC_VECTOR(7 downto 0) := "00000001";
 
-ARCHITECTURE pc_a OF pc IS
--- synthesis translate_off
-COMPONENT wrapped_pc
-  PORT (
-    clk : IN STD_LOGIC;
-    ce : IN STD_LOGIC;
-    load : IN STD_LOGIC;
-    l : IN STD_LOGIC_VECTOR(5 DOWNTO 0);
-    q : OUT STD_LOGIC_VECTOR(5 DOWNTO 0)
-  );
-END COMPONENT;
+begin
+	process(CLK, SCLR, Trig)
+		begin
+		if(SCLR = '1') then
+			C <= "00000000";
+		elsif(rising_edge(CLK) and Trig = '1') then
+			C <= std_logic_vector(unsigned(C) + unsigned(A));
+			if(LDEN = '1') then
+				C <= LOAD;
+			end if;
+		end if;
+		end process;
+		Count <= C;
+end Behavioral;
 
--- Configuration specification
-  FOR ALL : wrapped_pc USE ENTITY XilinxCoreLib.c_counter_binary_v11_0(behavioral)
-    GENERIC MAP (
-      c_ainit_val => "0",
-      c_ce_overrides_sync => 0,
-      c_count_by => "1",
-      c_count_mode => 0,
-      c_count_to => "100000",
-      c_fb_latency => 2,
-      c_has_ce => 1,
-      c_has_load => 1,
-      c_has_sclr => 0,
-      c_has_sinit => 0,
-      c_has_sset => 0,
-      c_has_thresh0 => 0,
-      c_implementation => 0,
-      c_latency => 1,
-      c_load_low => 0,
-      c_restrict_count => 1,
-      c_sclr_overrides_sset => 1,
-      c_sinit_val => "0",
-      c_thresh0_value => "1",
-      c_verbosity => 0,
-      c_width => 6,
-      c_xdevicefamily => "spartan3e"
-    );
--- synthesis translate_on
-BEGIN
--- synthesis translate_off
-U0 : wrapped_pc
-  PORT MAP (
-    clk => clk,
-    ce => ce,
-    load => load,
-    l => l,
-    q => q
-  );
--- synthesis translate_on
-
-END pc_a;
