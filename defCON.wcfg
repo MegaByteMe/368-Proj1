@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="E:/Project1/Proj1 - ReWrite/ConUnit_toplevel_tb_isim_beh.wdb" id="1" type="auto">
+         <top_modules>
+            <top_module name="conunit_toplevel_tb" />
+            <top_module name="numeric_std" />
+            <top_module name="std_logic_1164" />
+            <top_module name="std_logic_arith" />
+            <top_module name="std_logic_textio" />
+            <top_module name="std_logic_unsigned" />
+            <top_module name="textio" />
+            <top_module name="vcomponents" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <WVObjectSize size="20" />
+   <wvobject fp_name="/conunit_toplevel_tb/uut/clk" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/conunit_toplevel_tb/uut/rst" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/conunit_toplevel_tb/uut/flush" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">flush</obj_property>
+      <obj_property name="ObjectShortName">flush</obj_property>
+   </wvobject>
+   <wvobject fp_name="/conunit_toplevel_tb/uut/pcclken" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">pcclken</obj_property>
+      <obj_property name="ObjectShortName">pcclken</obj_property>
+   </wvobject>
+   <wvobject fp_name="/conunit_toplevel_tb/uut/ConUnit/cstate" type="other" db_ref_id="1">
+      <obj_property name="ElementShortName">cstate</obj_property>
+      <obj_property name="ObjectShortName">cstate</obj_property>
+   </wvobject>
+   <wvobject fp_name="/conunit_toplevel_tb/uut/IM/addra" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">addra[4:0]</obj_property>
+      <obj_property name="ObjectShortName">addra[4:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/conunit_toplevel_tb/uut/ConUnit/iren" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">iren</obj_property>
+      <obj_property name="ObjectShortName">iren</obj_property>
+   </wvobject>
+   <wvobject fp_name="/conunit_toplevel_tb/uut/ir1" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">ir1[15:0]</obj_property>
+      <obj_property name="ObjectShortName">ir1[15:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/conunit_toplevel_tb/uut/ConUnit/t2iren" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">t2iren</obj_property>
+      <obj_property name="ObjectShortName">t2iren</obj_property>
+   </wvobject>
+   <wvobject fp_name="/conunit_toplevel_tb/uut/ir2" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">ir2[15:0]</obj_property>
+      <obj_property name="ObjectShortName">ir2[15:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/conunit_toplevel_tb/uut/ConUnit/t3iren" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">t3iren</obj_property>
+      <obj_property name="ObjectShortName">t3iren</obj_property>
+   </wvobject>
+   <wvobject fp_name="/conunit_toplevel_tb/uut/ir3" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">ir3[15:0]</obj_property>
+      <obj_property name="ObjectShortName">ir3[15:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/conunit_toplevel_tb/uut/ConUnit/t4iren" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">t4iren</obj_property>
+      <obj_property name="ObjectShortName">t4iren</obj_property>
+   </wvobject>
+   <wvobject fp_name="/conunit_toplevel_tb/uut/ir4" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">ir4[15:0]</obj_property>
+      <obj_property name="ObjectShortName">ir4[15:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/conunit_toplevel_tb/uut/ConUnit/t5iren" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">t5iren</obj_property>
+      <obj_property name="ObjectShortName">t5iren</obj_property>
+   </wvobject>
+   <wvobject fp_name="/conunit_toplevel_tb/uut/ir5" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">ir5[15:0]</obj_property>
+      <obj_property name="ObjectShortName">ir5[15:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/conunit_toplevel_tb/amuxsel" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">amuxsel</obj_property>
+      <obj_property name="ObjectShortName">amuxsel</obj_property>
+   </wvobject>
+   <wvobject fp_name="/conunit_toplevel_tb/bmuxsel" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">bmuxsel</obj_property>
+      <obj_property name="ObjectShortName">bmuxsel</obj_property>
+   </wvobject>
+   <wvobject fp_name="/conunit_toplevel_tb/uut/amuxsel" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">amuxsel</obj_property>
+      <obj_property name="ObjectShortName">amuxsel</obj_property>
+   </wvobject>
+   <wvobject fp_name="/conunit_toplevel_tb/uut/bmuxsel" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">bmuxsel</obj_property>
+      <obj_property name="ObjectShortName">bmuxsel</obj_property>
+   </wvobject>
+</wave_config>

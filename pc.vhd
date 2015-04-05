@@ -41,7 +41,7 @@ begin
 		begin
 		if(SCLR = '1') then
 			C <= "00000000";
-		elsif(rising_edge(CLK) and Trig = '1') then
+		elsif(falling_edge(CLK) and Trig = '1') then
 			C <= std_logic_vector(unsigned(C) + unsigned(A));
 			if(LDEN = '1') then
 				C <= LOAD;

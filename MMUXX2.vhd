@@ -20,24 +20,37 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
-entity MUXX3 is
+entity MMUXX2 is
 	port(
-		WIN : IN STD_LOGIC_VECTOR(15 downto 0);
+		ADDR1 : IN STD_LOGIC_VECTOR(3 downto 0);
+		ADDR2 : IN STD_LOGIC_VECTOR(3 downto 0);
 		XIN : IN STD_LOGIC_VECTOR(15 downto 0);
 		YIN : IN STD_LOGIC_VECTOR(15 downto 0);
 		ZOUT : OUT STD_LOGIC_VECTOR(15 downto 0);
-		SEL : IN STD_LOGIC_VECTOR(1 downto 0)
+		AOUT : OUT STD_LOGIC_VECTOR(3 downto 0);
+		SEL : IN STD_LOGIC;
+		IEN : IN STD_LOGIC_VECTOR(0 downto 0);
+		EOUT : OUT STD_LOGIC_VECTOR(0 downto 0)
 		);
-end MUXX3;
+end MMUXX2;
 
-architecture Combinational of MUXX3 is
+architecture Combinational of MMUXX2 is
+begin	  
 
-begin
 	with SEL select
-	ZOUT <= WIN when "00",
-			  XIN when "01",
-			  YIN when "10",
-			  WIN when others;
-
+			AOUT <= ADDR1 when '1',
+						ADDR2 when '0',
+						ADDR1 when others;
+						
+	with SEL select					
+			ZOUT <= XIN when '1',
+						YIN when '0',
+						XIN when others;
+						
+	with SEL select
+			EOUT <= "0" when '1',
+						IEN when '0',
+						"0" when others;
+			
 end Combinational;
 

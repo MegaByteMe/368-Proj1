@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="C:/Users/LabRat/Desktop/Proj1 - ReWrite/MAST_TB_isim_beh.wdb" id="1" type="auto">
+         <top_modules>
+            <top_module name="mast_tb" />
+            <top_module name="numeric_std" />
+            <top_module name="std_logic_1164" />
+            <top_module name="std_logic_arith" />
+            <top_module name="std_logic_textio" />
+            <top_module name="std_logic_unsigned" />
+            <top_module name="textio" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <WVObjectSize size="25" />
+   <wvobject fp_name="/mast_tb/clk" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/mast_tb/rst" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/mast_tb/uut/ConUnit/ConUnit/cstate" type="other" db_ref_id="1">
+      <obj_property name="ElementShortName">cstate</obj_property>
+      <obj_property name="ObjectShortName">cstate</obj_property>
+   </wvobject>
+   <wvobject fp_name="/mast_tb/uut/ConUnit/PC/lden" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">lden</obj_property>
+      <obj_property name="ObjectShortName">lden</obj_property>
+   </wvobject>
+   <wvobject fp_name="/mast_tb/uut/ConUnit/PC/load" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">load[7:0]</obj_property>
+      <obj_property name="ObjectShortName">load[7:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/mast_tb/uut/ConUnit/PC/c" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">c[7:0]</obj_property>
+      <obj_property name="ObjectShortName">c[7:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/mast_tb/uut/ConUnit/IM/addra" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">addra[4:0]</obj_property>
+      <obj_property name="ObjectShortName">addra[4:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/mast_tb/uut/ConUnit/IM/douta" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">douta[15:0]</obj_property>
+      <obj_property name="ObjectShortName">douta[15:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/mast_tb/uut/FPU/ir1" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">ir1[15:0]</obj_property>
+      <obj_property name="ObjectShortName">ir1[15:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ffff00</obj_property>
+   </wvobject>
+   <wvobject fp_name="/mast_tb/uut/FPU/ir2" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">ir2[15:0]</obj_property>
+      <obj_property name="ObjectShortName">ir2[15:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#00ffff</obj_property>
+   </wvobject>
+   <wvobject fp_name="/mast_tb/uut/FPU/ir3" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">ir3[15:0]</obj_property>
+      <obj_property name="ObjectShortName">ir3[15:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#800080</obj_property>
+   </wvobject>
+   <wvobject fp_name="/mast_tb/uut/FPU/ir4" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">ir4[15:0]</obj_property>
+      <obj_property name="ObjectShortName">ir4[15:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ff00ff</obj_property>
+   </wvobject>
+   <wvobject fp_name="/mast_tb/uut/FPU/ir5" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">ir5[15:0]</obj_property>
+      <obj_property name="ObjectShortName">ir5[15:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ffa500</obj_property>
+   </wvobject>
+   <wvobject fp_name="/mast_tb/uut/FPU/GP_REG/addra" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">addra[3:0]</obj_property>
+      <obj_property name="ObjectShortName">addra[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/mast_tb/uut/FPU/GP_REG/addrb" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">addrb[3:0]</obj_property>
+      <obj_property name="ObjectShortName">addrb[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/mast_tb/uut/FPU/GP_REG/douta" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">douta[15:0]</obj_property>
+      <obj_property name="ObjectShortName">douta[15:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/mast_tb/uut/FPU/GP_REG/doutb" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">doutb[15:0]</obj_property>
+      <obj_property name="ObjectShortName">doutb[15:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/mast_tb/uut/FPU/immed" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">immed[15:0]</obj_property>
+      <obj_property name="ObjectShortName">immed[15:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/mast_tb/uut/FPU/opa" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">opa[15:0]</obj_property>
+      <obj_property name="ObjectShortName">opa[15:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/mast_tb/uut/FPU/opb" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">opb[15:0]</obj_property>
+      <obj_property name="ObjectShortName">opb[15:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/mast_tb/uut/FPU/FPU/alu_out" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">alu_out[15:0]</obj_property>
+      <obj_property name="ObjectShortName">alu_out[15:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/mast_tb/uut/FPU/IN_RBA_Mux/aout" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">aout[3:0]</obj_property>
+      <obj_property name="ObjectShortName">aout[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/mast_tb/uut/FPU/IN_RBA_Mux/zout" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">zout[15:0]</obj_property>
+      <obj_property name="ObjectShortName">zout[15:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/mast_tb/uut/FPU/IN_RBA_Mux/ien" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">ien[0:0]</obj_property>
+      <obj_property name="ObjectShortName">ien[0:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/mast_tb/uut/FPU/IN_RBA_Mux/eout" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">eout[0:0]</obj_property>
+      <obj_property name="ObjectShortName">eout[0:0]</obj_property>
+   </wvobject>
+</wave_config>

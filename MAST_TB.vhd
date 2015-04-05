@@ -31,7 +31,7 @@ USE ieee.std_logic_1164.ALL;
 ENTITY MAST_TB IS
 END MAST_TB;
  
-ARCHITECTURE behavior OF MAST_TB IS 
+ARCHITECTURE behavioral OF MAST_TB IS 
  
     -- Component Declaration for the Unit Under Test (UUT)
  
@@ -39,56 +39,36 @@ ARCHITECTURE behavior OF MAST_TB IS
     PORT(
          CLK : IN  std_logic;
          RST : IN  std_logic;
-         LED : OUT  std_logic_vector(7 downto 0);
+		--	SW : in STD_LOGIC;
          ALU_OUT : OUT  std_logic_vector(15 downto 0)
         );
     END COMPONENT;
-    
-
-   --Inputs
-   signal CLK : std_logic := '0';
-   signal RST : std_logic := '0';
-
- 	--Outputs
-   signal LED : std_logic_vector(7 downto 0);
-   signal ALU_OUT : std_logic_vector(15 downto 0);
+	 
+	 	--INSTRUCTION STATE REGISTERS
+	signal IR1, IR2, IR3, IR4, IR5 : STD_LOGIC_VECTOR(15 downto 0) := (others => '0');	
 	
-		--FPU
-	signal CCR : STD_LOGIC_VECTOR(3 downto 0) := (others => '0');
-	signal LDSTO : STD_LOGIC_VECTOR(15 downto 0) := (others => '0');
-	
-	signal IM_FEED : STD_LOGIC_VECTOR(15 downto 0) := (others => '0');
-	
+	--REGISTER ENABLES
+	signal RAWen, RBWen, FPRWen : STD_LOGIC;	
 	signal RB_WEA : STD_LOGIC_VECTOR(0 downto 0) := (others => '0');
 	signal RB_WEB : STD_LOGIC_VECTOR(0 downto 0) := (others => '0');
-	signal RB_ADDRA : STD_LOGIC_VECTOR(3 downto 0) := (others => '0');
-	signal RB_ADDRB : STD_LOGIC_VECTOR(3 downto 0) := (others => '0');
 	
-	signal AMUXSEL : STD_LOGIC := '0';
-	signal BMUXSEL : STD_LOGIC_VECTOR(1 downto 0) := (others => '0');
+	--MUX ENABLES
+	signal AMUXSEL, BMUXSEL : STD_LOGIC := '0';
 	signal SW1SEL : STD_LOGIC := '0';
-	
-	signal RAWen, RBWen, FPRWen : STD_LOGIC;
-	
-	signal GRAMI : STD_LOGIC_VECTOR(15 downto 0) := (others => '0');
-	signal GRAMO : STD_LOGIC_VECTOR(15 downto 0) := (others => '0');
-	signal GADD : STD_LOGIC_VECTOR(3 downto 0) := (others => '0');
-	signal GEN : STD_LOGIC := '0';
-	signal GWEA : STD_LOGIC_VECTOR(0 downto 0) := (others => '0');
-	
-	signal FOSWSEL : STD_LOGIC;
+	signal FOSWSEL : STD_LOGIC := '0';
 
+
+	signal CLK : STD_LOGIC := '0'; 
+	signal RST : STD_LOGIC := '1';
    -- Clock period definitions
-   constant CLK_period : time := 1 ns;
+   constant CLK_period : time := 20 ns;
  
 BEGIN
  
 	-- Instantiate the Unit Under Test (UUT)
    uut: MAST PORT MAP (
           CLK => CLK,
-          RST => RST,
-          LED => LED,
-          ALU_OUT => ALU_OUT
+          RST => RST
         );
 
    -- Clock process definitions
@@ -106,7 +86,7 @@ BEGIN
    begin		
 	rst <= '1';
       -- hold reset state for 100 ns.
-      wait for 100 ns;	
+      wait for 40 ns;	
 		rst <= '0';
       wait for CLK_period*10;
 

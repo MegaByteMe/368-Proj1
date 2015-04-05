@@ -25,7 +25,7 @@ entity MUXX2 is
 		XIN : IN STD_LOGIC_VECTOR(15 downto 0);
 		YIN : IN STD_LOGIC_VECTOR(15 downto 0);
 		ZOUT : OUT STD_LOGIC_VECTOR(15 downto 0);
-		SEL : IN STD_LOGIC
+		SEL : IN STD_LOGIC_VECTOR(3 downto 0)
 		);
 end MUXX2;
 
@@ -33,8 +33,8 @@ architecture Combinational of MUXX2 is
 
 begin
 	with SEL select
-	ZOUT <= XIN when '0',
-			  YIN when '1',
+	ZOUT <= YIN when "0101",
+			  YIN when "0110",
 			  XIN when others;
 
 end Combinational;

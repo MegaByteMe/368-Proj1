@@ -24,18 +24,19 @@ entity ConUnit is
 	port(
 		CLK : IN STD_LOGIC;		
 		RST : IN STD_LOGIC;
-		
+		CCR : IN STD_LOGIC_VECTOR(3 downto 0);
 		pcCLKen : OUT STD_LOGIC;
-		imdout : IN STD_LOGIC_VECTOR(15 downto 0);
-		
+		STKEN : OUT STD_LOGIC;
+		STKRD : OUT STD_LOGIC;
 		RB_WEA, RB_WEB : OUT STD_LOGIC_VECTOR(0 downto 0);
 		RAWen, RBWen, FPRWen : OUT STD_LOGIC;
-		
-		IRWen, T2IRen, T3IRen, T4IRen, T5IRen : OUT STD_LOGIC;
-		AMUXSEL : OUT STD_LOGIC;
-		BMUXSEL : OUT STD_LOGIC_VECTOR(1 downto 0);
-		RAMrst : OUT STD_LOGIC;
-		
+		flush : OUT STD_LOGIC;
+		IRens : OUT STD_LOGIC_VECTOR(4 downto 0);
+		IR1, IR2, IR3, IR4, IR5 : IN STD_LOGIC_VECTOR(15 downto 0);
+		STKOUT : IN STD_LOGIC_VECTOR(15 downto 0);
+		PCLOAD : OUT STD_LOGIC_VECTOR(7 downto 0);
+		LDEN : OUT STD_LOGIC;
+						
 		EXTRAMADR : OUT STD_LOGIC_VECTOR(7 downto 0);
 		EXTRAMEN : OUT STD_LOGIC;
 		EXTRAMWEA : OUT STD_LOGIC_VECTOR(0 downto 0);
@@ -51,6 +52,10 @@ architecture Behavioral of ConUnit is
 	  -- Finite State Machine Setup
     type fsm_state is
 		(
+		 BRAN,
+		 FRZ,
+		 UNFRZ,
+		 RESET,
 		 IDLE,
 		 T1,
 		 T2,
@@ -60,33 +65,43 @@ architecture Behavioral of ConUnit is
 		 );
 	 
     signal Cstate, Nstate, Lstate : fsm_state := idle; -- set FSM init state
+	 signal T1IRen, T2IRen, T3IRen, T4IRen, T5IRen : STD_LOGIC := '0';
 	 
 begin
+
+IRens(4 downto 0) <= T1IRen & T2IRen & T3IRen & T4IRen & T5IRen;
 
     ---------------------------------------------------
     -- FINITE STATE MACHINE
     ---------------------------------------------------
-	fsm: process( CLK, RST, Nstate )
+	fsm: process( CLK, RST, Nstate, Lstate, IR1, IR5, CCR )
 	begin
 		if(RST = '1' ) then
-			Cstate <= IDLE;
+			Cstate <= RESET;
 		elsif(rising_edge(CLK)) then
-			if(Nstate = idle) then
+			if(Nstate = IDLE and LSTATE = IDLE) then
 				Cstate <= T1;
+			elsif(IR5(15 downto 12) = "1111" and IR5(11 downto 8) = CCR) then
+				--BRANCH
+				CSTATE <= BRAN;
+			elsif(IR1(15 downto 12) = "1101") then
+				--Jump 16bit IMMED
+				CSTATE <= FRZ;
+			elsif(IR1(15 downto 12) = "1110") then
+				--RTL return
+				CSTATE <= UNFRZ;
 			else
 				Cstate <= Nstate;
-			end if;
+			end if;			
 		end if;
 	end process fsm;
 	 
-  crank: process(Cstate, imdout)	 
+  crank: process(Cstate)	 
     begin	
             case Cstate is
-                when IDLE =>								--default state
+					 when RESET => 
 						pcclken <= '0';
-						IRWen <= '1';
-						AMUXSEL <= '0';
-						BMUXSEL <= "00";
+						flush <= '1';
 						RB_WEA <= "0";
 						RB_WEB <= "0";
 						
@@ -98,120 +113,69 @@ begin
 						LOCRAMEN <= '0';
 						LOCRAMWEA <= "0";
 						
-                when T1 =>
-					 	pcclken <= '1';
-						T2IRen <= '1';
+						T1IRen <= '0';
+						T2IRen <= '0';
+						T3IRen <= '0';
+						T4IRen <= '0';
+						T5IRen <= '0';
+						LSTATE <= RESET;
+						NSTATE <= IDLE;
+						
+                when IDLE =>								--default state
+						pcclken <= '0';
+						flush <= '0';
+						LSTATE <= IDLE;
+						NSTATE <= IDLE;
+						STKRD <= '0';
+						LDEN <= '0';
+						STKEN <= '0';
+					
+					 when BRAN =>
+						flush <= '1';
+						LDEN <= '1';
+						PCLOAD <= IR5(7 downto 0);
+					
+					 when FRZ =>
+						LSTATE <= FRZ;
+						PCLOAD <= IR1(7 downto 0);
+						STKen <= '1';
+						LDEN <= '1';
+						NSTATE <= idle;
+						
+					 when UNFRZ =>
+						LSTATE <= UNFRZ;
+						NSTATE <= idle;
+						STKRD <= '1';
+						LDEN <= '1';
+						PCLOAD <= STKOUT(7 downto 0);
+						
+                when T1 =>						 
+						T1IRen <= '1';
+						pcclken <= '1';
 						NSTATE <= T2;
 
-                when T2 =>						
-						case imdout(15 downto 12) is
-								--add reg a and b
-							when "0000" =>
-									AMUXSEL <= '0';
-									BMUXSEL <= "00";
-									RAWen <= '1';
-									RBWen <= '1';
-									NSTATE <= T3;
-								--sub reg a and b
-							when "0001" =>
-									AMUXSEL <= '0';
-									BMUXSEL <= "00";
-									RAWen <= '1';
-									RBWen <= '1';
-									NSTATE <= T3;
-								--and reg a and b
-							when "0010" =>
-									AMUXSEL <= '0';
-									BMUXSEL <= "00";
-									RAWen <= '1';
-									RBWen <= '1';									
-									NSTATE <= T3;
-								--or reg a and b
-							when "0011" =>	
-									AMUXSEL <= '0';
-									BMUXSEL <= "00";
-									RAWen <= '1';
-									RBWen <= '1';
-									NSTATE <= T3;
-								--move reg b to a
-							when "0100" =>
-									NSTATE <= T3;
-								--addi reg a I
-							when "0101" =>
-									AMUXSEL <= '0';
-									BMUXSEL <= "01";
-									RAWen <= '1';
-									RBWen <= '0';
-									NSTATE <= T3;
-								--andi reg a I
-							when "0110" =>
-									AMUXSEL <= '0';
-									BMUXSEL <= "01";
-									RAWen <= '1';
-									RBWen <= '0';
-									NSTATE <= T3;
-								--shift left reg a I
-							when "0111" =>
-									RAWen <= '1';
-									RBWen <= '0';
-									NSTATE <= T3;
-								--shift right reg a I
-							when "1000" =>
-									RAWen <= '1';
-									RBWen <= '0';
-									NSTATE <= T3;
-								--load word reg a I
-							when "1001" =>
-									RAWen <= '1';
-									RBWen <= '0';
-									NSTATE <= T3;
-								--store word reg a -> mem
-							when "1010" =>
-									RAWen <= '1';
-									RBWen <= '0';
-									NSTATE <= T3;
-								--LMV load word vector
-							when "1011" =>
-									NSTATE <= T3;
-								--SMV store word vector
-							when "1100" =>
-									RAWen <= '1';
-									RBWen <= '0';
-									NSTATE <= T3;
-								--Jump 16bit IMMED
-							when "1101" =>
-									RAWen <= '1';
-									RBWen <= '0';
-									NSTATE <= T3;
-								--RTL return
-							when "1110" =>
-									RAWen <= '1';
-									RBWen <= '0';
-									NSTATE <= T3;
-								--BRA branch
-							when "1111" =>
-									RAWen <= '1';
-									RBWen <= '0';
-									NSTATE <= T3;
-							when others => NSTATE <= T2;
-						
-							T3IRen <= '1';
-						end case;		
+                when T2 =>	
+						T2IRen <= '1';
+						RAWen <= '1';
+						RBWen <= '1';
+						NSTATE <= T3;
 						
 					 when T3 =>
-							T4IRen <= '1';
-							NSTATE <= T4;
+						T3IRen <= '1';
+						NSTATE <= T4;
 							
 					 when T4 =>
-							FPRWen <= '1';
-							T5IRen <= '1';
-							NSTATE <= T5;
-							
+						T4IRen <= '1';
+						FPRWen <= '1';
+						NSTATE <= T5;
+						
 					 when T5 =>
-							NSTATE <= T1;
+						T5IRen <= '1';
+						RB_WEA <= "1";
+						NSTATE <= T1;
 
                 when OTHERS =>
-                     NSTATE <= IDLE;
+                  NSTATE <= IDLE;
              end case;
 				 Lstate <= Cstate;
     end process crank;

@@ -4,10 +4,10 @@
 -- 
 -- Create Date:    11:27:09 03/11/2015 
 -- Design Name: 
--- Module Name:    MAST - Behavioral 
--- Project Name: 	 Project1
--- Target Devices: 
--- Tool versions: 
+-- Module Name:    MAST - Structural 
+-- Project Name: 	 Project1 - Lab2
+-- Target Devices: Spartan 3
+-- Tool versions: Xilinx 14.7
 -- Description: 
 --
 -- Dependencies: 
@@ -24,7 +24,12 @@ entity MAST is
 		port (
 				CLK : IN STD_LOGIC;
 				RST : IN STD_LOGIC;
-				ALU_OUT : OUT STD_LOGIC_VECTOR(15 downto 0)				
+			--	SW : IN STD_LOGIC;
+				
+				JA : OUT STD_LOGIC_VECTOR(7 downto 0);
+				JB : OUT STD_LOGIC_VECTOR(7 downto 0);
+				
+				ALU_OUT : OUT STD_LOGIC_VECTOR(15 downto 0)
 				);
 end MAST;
 
@@ -35,19 +40,13 @@ architecture Structural of MAST is
 	signal LDSTO : STD_LOGIC_VECTOR(15 downto 0) := (others => '0');
 	
 	--INSTRUCTION STATE REGISTERS
-	signal IR1, IR2, IR3, IR4, IR5 : STD_LOGIC_VECTOR(15 downto 0) := (others => '0');	
+	signal IR1, IR2, IR3, IR4, IR5 : STD_LOGIC_VECTOR(15 downto 0) := (others => '0');			
 	
 	--REGISTER ENABLES
 	signal RAWen, RBWen, FPRWen : STD_LOGIC;	
 	signal RB_WEA : STD_LOGIC_VECTOR(0 downto 0) := (others => '0');
 	signal RB_WEB : STD_LOGIC_VECTOR(0 downto 0) := (others => '0');
-	
-	--MUX ENABLES
-	signal AMUXSEL : STD_LOGIC := '0';
-	signal BMUXSEL : STD_LOGIC_VECTOR(1 downto 0) := (others => '0');
-	signal SW1SEL : STD_LOGIC := '0';
-	signal FOSWSEL : STD_LOGIC := '0';
-	
+		
 	--EXTERNAL MEMORY SIGNALS
 	signal EXTMI, EXTMO : STD_LOGIC_VECTOR(15 downto 0) := (others => '0');
 	signal EXTMADDR : STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
@@ -59,15 +58,19 @@ architecture Structural of MAST is
 	signal LOCMADDR : STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
 	signal LMEN : STD_LOGIC := '0';
 	signal LMWEA : STD_LOGIC_VECTOR(0 downto 0) := (others => '0');
+	
+	signal debug : STD_LOGIC_VECTOR(9 downto 0);
+	signal debug2 : STD_LOGIC_VECTOR(4 downto 0);
 
 begin
 --entities
+JA <= CLK & debug2 & debug(9 downto 8);
+JB <= debug(7 downto 0);
+
 	ConUnit : entity work.ConUnit_toplevel
 		port map(
 					CLK => CLK,
 					RST => RST,
-					AMUXSEL => AMUXSEL,
-					BMUXSEL => BMUXSEL,
 					
 					RB_WEA => RB_WEA,
 					RB_WEB => RB_WEB,
@@ -76,6 +79,12 @@ begin
 					RBWen => RBWen,
 					FPRWen => FPRWen,
 					
+					IR1 => IR1,
+					IR2 => IR2,
+					IR3 => IR3,
+					IR4 => IR4,
+					IR5 => IR5,
+					
 					EXTRAMADR => EXTMADDR,
 					EXTRAMEN => EMEN,
 					EXTRAMWEA => EMWEA,
@@ -83,14 +92,10 @@ begin
 					LOCRAMADR => LOCMADDR,
 					LOCRAMEN => LMEN,
 					LOCRAMWEA => LMWEA,
-					
-					IR1 => IR1,
-					IR2 => IR2,
-					IR3 => IR3,
-					IR4 => IR4,
-					IR5 => IR5,
-					
-					FOSWSEL => FOSWSEL
+
+					debug2 => debug2,
+
+					CCR => CCR
 					);
 
 	FPU : entity work.FPUnit_toplevel
@@ -101,21 +106,21 @@ begin
 					CCR => CCR,
 					ALU_OUT => ALU_OUT,
 					LDST => LDSTO,
-					IM_FEED => IR1,
 					
 					RB_ENA => '1',
 					RB_ENB => '1',
 					RB_WEA => RB_WEA,
 					RB_WEB => RB_WEB,
-					RB_ADDRA => IR1(11 downto 8),
-					RB_ADDRB => IR1(7 downto 4),
+
+					IR1 => IR1,
+					IR2 => IR2,
+					IR3 => IR3,
+					IR4 => IR4,
+					IR5 => IR5,
 					
 					RAWen => RAWen,
 					RBWen => RBWen,
 					FPRWen => FPRWen,
-					
-					AMUXSEL => AMUXSEL,
-					BMUXSEL => BMUXSEL,
 					
 					EXTRAMI => EXTMI,
 					EXTRAMO => EXTMO,
@@ -124,7 +129,7 @@ begin
 					LMEN => LMEN,
 					LMWEA => LMWEA,
 					
-					FOSWSEL => FOSWSEL
+					debug => debug
 					);
 					
 	EXT_RAM : entity work.general_ram
@@ -135,7 +140,7 @@ begin
 					ADDRA => EXTMADDR,
 					ENA => EMEN,
 					WEA => EMWEA
-					);
+					); 
 
 end Structural;
 

@@ -37,7 +37,7 @@ begin
 		begin
 			if(RST = '1') then
 				yout <= X"0000";
-			elsif(falling_edge(CLK) and WEN = '0') then
+			elsif(falling_edge(CLK) and WEN = '1') then
 				YOUT <= XIN;
 			end if;
 	end process;
